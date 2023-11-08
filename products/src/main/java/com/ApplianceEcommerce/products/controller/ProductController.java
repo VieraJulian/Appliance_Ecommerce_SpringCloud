@@ -3,6 +3,7 @@ package com.ApplianceEcommerce.products.controller;
 import com.ApplianceEcommerce.products.dto.ProductDTO;
 import com.ApplianceEcommerce.products.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ public class ProductController {
 
     @Autowired
     private IProductService prodServ;
+
+    @Value("${server.port}")
+    private int port;
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductDTO>> getProducts() {

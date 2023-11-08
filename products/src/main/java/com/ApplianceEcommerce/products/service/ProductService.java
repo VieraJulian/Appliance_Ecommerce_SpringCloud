@@ -50,7 +50,6 @@ public class ProductService implements IProductService {
                 .brand(productDB.getBrand())
                 .stock(productDB.getStock())
                 .build();
-
     }
 
     @Override
@@ -109,6 +108,7 @@ public class ProductService implements IProductService {
         prodRepo.save(productDB);
 
         return ProductDTO.builder()
+                    .id(productDB.getId())
                     .name(productDB.getName())
                     .price(productDB.getPrice())
                     .brand(productDB.getBrand())
