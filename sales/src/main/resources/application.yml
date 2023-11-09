@@ -1,18 +1,18 @@
 server:
-  port: 8004
+  port: ${SERVER_PORT}
 
 feign:
   productApi:
     url: ${PRODUCT_API_URL}
 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
+
 spring:
   application:
     name: sales-service
-  #eureka:
-  #  client:
-  #    service-url:
-  #      defaultZone: http://localhost:8761/eureka
-
   jpa:
     hibernate:
       ddl-auto: update
