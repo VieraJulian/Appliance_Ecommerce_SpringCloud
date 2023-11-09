@@ -79,4 +79,15 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/{cart_id}/delete")
+    public ResponseEntity<String> deleteCart(@PathVariable Long cart_id) {
+        try {
+            cartServ.deleteCart(cart_id);
+
+            return new ResponseEntity<>("¡Cart successfully deleted!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

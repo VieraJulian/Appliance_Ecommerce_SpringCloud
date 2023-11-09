@@ -1,0 +1,23 @@
+server:
+  port: 8004
+
+feign:
+  productApi:
+    url: ${PRODUCT_API_URL}
+
+spring:
+  application:
+    name: sales-service
+  #eureka:
+  #  client:
+  #    service-url:
+  #      defaultZone: http://localhost:8761/eureka
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: ${DB_URL}?serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
