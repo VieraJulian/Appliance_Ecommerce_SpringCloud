@@ -3,7 +3,7 @@ package com.ApplianceEcommerce.sales.service;
 import com.ApplianceEcommerce.sales.dto.CartDTO;
 import com.ApplianceEcommerce.sales.dto.SaleDTO;
 import com.ApplianceEcommerce.sales.model.Sale;
-import com.ApplianceEcommerce.sales.repository.CartAPI;
+import com.ApplianceEcommerce.sales.repository.ICartAPI;
 import com.ApplianceEcommerce.sales.repository.ISalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class SaleService implements ISaleService {
     private ISalesRepository saleRepo;
 
     @Autowired
-    private CartAPI cartAPI;
+    private ICartAPI cartAPI;
 
     @Override
     public SaleDTO getSale(Long id) {

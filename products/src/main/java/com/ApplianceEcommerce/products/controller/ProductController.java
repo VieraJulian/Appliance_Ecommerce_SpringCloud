@@ -34,6 +34,7 @@ public class ProductController {
     @GetMapping("/details/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         try {
+            System.out.println("-------------------------------- port " + port);
             ProductDTO product = prodServ.getProduct(id);
 
             return new ResponseEntity<>(product, HttpStatus.OK);

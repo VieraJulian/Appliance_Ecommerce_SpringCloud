@@ -1,14 +1,13 @@
 server:
   port: ${SERVER_PORT}
 
-feign:
-  productApi:
-    url: ${PRODUCT_API_URL}
-
 eureka:
   client:
+    enabled: true
     service-url:
       defaultZone: ${EUREKA_URL}
+  instance:
+    hostname: localhost
 
 spring:
   application:

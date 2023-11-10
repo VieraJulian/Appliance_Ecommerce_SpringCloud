@@ -3,8 +3,11 @@ server:
 
 eureka:
   client:
+    enabled: true
     service-url:
       defaultZone: ${EUREKA_URL}
+  instance:
+    hostname: localhost
 
 spring:
   application:
