@@ -80,9 +80,12 @@ public class CartService implements ICartService {
             if (cp.getProduct_id() == product_id) {
                 ProductDTO prod = productAPI.getProduct(cp.getProduct_id());
 
-                cart.setTotal(cart.getTotal().add(prod.getPrice()));
-                cp.setQuantity(cp.getQuantity() + 1);
-                cp.setCart(cart);
+                if (prod.getStock() > cp.getQuantity()){
+                    cart.setTotal(cart.getTotal().add(prod.getPrice()));
+                    cp.setQuantity(cp.getQuantity() + 1);
+                    cp.setCart(cart);
+                }
+
                 found = true;
                 break;
             }
@@ -90,13 +93,16 @@ public class CartService implements ICartService {
 
         if (!found) {
             ProductDTO prod = productAPI.getProduct(product_id);
-            cart.setTotal(cart.getTotal().add(prod.getPrice()));
 
-            cart.getListProducts().add(CartProduct.builder()
-                            .product_id(product_id)
-                            .quantity(1)
-                            .cart(cart)
-                            .build());
+            if (prod.getStock() > 0) {
+                cart.setTotal(cart.getTotal().add(prod.getPrice()));
+
+                cart.getListProducts().add(CartProduct.builder()
+                        .product_id(product_id)
+                        .quantity(1)
+                        .cart(cart)
+                        .build());
+            }
         }
 
         Cart cartUpdated = cartRepo.save(cart);

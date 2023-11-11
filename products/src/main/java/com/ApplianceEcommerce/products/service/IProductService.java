@@ -18,4 +18,6 @@ public interface IProductService {
 
     public void deleteProduct(Long id);
 
+    public void reduceStock(Long product_id, int quantity);
+
 }

@@ -86,4 +86,15 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/{product_id}/stock")
+    public ResponseEntity<String> reduceStock(@PathVariable Long product_id, @RequestParam int quantity) {
+        try {
+            prodServ.reduceStock(product_id, quantity);
+
+            return new ResponseEntity<>("¡Stock updated successfully!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

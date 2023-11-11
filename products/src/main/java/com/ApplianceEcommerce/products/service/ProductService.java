@@ -120,4 +120,15 @@ public class ProductService implements IProductService {
     public void deleteProduct(Long id) {
         prodRepo.deleteById(id);
     }
+
+    @Override
+    public void reduceStock(Long product_id, int quantity) {
+        Product prod = prodRepo.findById(product_id).orElse(null);
+
+        if (prod.getStock() >= quantity) {
+            prod.setStock(prod.getStock() - quantity);
+        }
+
+        prodRepo.save(prod);
+    }
 }

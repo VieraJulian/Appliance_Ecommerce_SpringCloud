@@ -1,6 +1,8 @@
 package com.ApplianceEcommerce.sales.service;
 
 import com.ApplianceEcommerce.sales.dto.CartDTO;
+import com.ApplianceEcommerce.sales.dto.CartProductDTO;
+import com.ApplianceEcommerce.sales.dto.ProductDTO;
 import com.ApplianceEcommerce.sales.dto.SaleDTO;
 import com.ApplianceEcommerce.sales.model.Sale;
 import com.ApplianceEcommerce.sales.repository.ICartAPI;
@@ -18,6 +20,9 @@ public class SaleService implements ISaleService {
 
     @Autowired
     private ISalesRepository saleRepo;
+
+    @Autowired
+    private IProductAPI productAPI;
 
     @Autowired
     private ICartAPI cartAPI;
@@ -60,7 +65,18 @@ public class SaleService implements ISaleService {
     public SaleDTO createSale(Long cart_id) {
         CartDTO cart = cartAPI.getCart(cart_id);
 
+        if (cart == null) {
+            return null;
+        }
+
         cartAPI.clearCart(cart_id);
+
+        for (CartProductDTO cp : cart.getListProducts()) {
+            Integer quantity = cp.getQuantity();
+
+            productAPI.reduceStock(cp.getProduct().getId(), quantity);
+        }
+
 
         Sale sale = saleRepo.save(Sale.builder()
                 .cart_id(cart_id)
