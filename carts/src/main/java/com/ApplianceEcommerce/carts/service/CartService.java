@@ -9,6 +9,7 @@ import com.ApplianceEcommerce.carts.repository.ICartProductRepository;
 import com.ApplianceEcommerce.carts.repository.ICartRepository;
 import com.ApplianceEcommerce.carts.repository.ProductAPI;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +69,7 @@ public class CartService implements ICartService {
 
     @Override
     @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
+    @Retry(name = "products-service")
     public CartDTO addProductToCart(Long cart_id, Long product_id) {
 
         Cart cart = cartRepo.findById(cart_id).orElse(null);
@@ -131,6 +133,7 @@ public class CartService implements ICartService {
 
     @Override
     @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
+    @Retry(name = "products-service")
     public CartDTO subtractProductFromCart(Long cart_id, Long product_id) {
         Cart cart = cartRepo.findById(cart_id).orElse(null);
 
@@ -180,6 +183,7 @@ public class CartService implements ICartService {
 
     @Override
     @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
+    @Retry(name = "products-service")
     public CartDTO removeProductFromCart(Long cart_id, Long product_id) {
         Cart cart = cartRepo.findById(cart_id).orElse(null);
 

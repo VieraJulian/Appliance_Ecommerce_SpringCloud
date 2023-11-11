@@ -8,6 +8,7 @@ import com.ApplianceEcommerce.sales.model.Sale;
 import com.ApplianceEcommerce.sales.repository.ICartAPI;
 import com.ApplianceEcommerce.sales.repository.ISalesRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,7 @@ public class SaleService implements ISaleService {
 
     @Override
     @CircuitBreaker(name = "carts-service", fallbackMethod = "fallbackCart")
+    @Retry(name = "carts-service")
     public SaleDTO getSaleByOperationCode(String operationCode) {
 
         Sale saleDB = saleRepo.getSaleByOperationCode(operationCode);
@@ -66,6 +68,7 @@ public class SaleService implements ISaleService {
 
     @Override
     @CircuitBreaker(name = "carts-service", fallbackMethod = "fallbackCart")
+    @Retry(name = "carts-service")
     public SaleDTO createSale(Long cart_id) {
 
         CartDTO cart = cartAPI.getCart(cart_id);
