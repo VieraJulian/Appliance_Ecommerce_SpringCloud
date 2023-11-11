@@ -7,6 +7,7 @@ import com.ApplianceEcommerce.sales.dto.SaleDTO;
 import com.ApplianceEcommerce.sales.model.Sale;
 import com.ApplianceEcommerce.sales.repository.ICartAPI;
 import com.ApplianceEcommerce.sales.repository.ISalesRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,9 @@ public class SaleService implements ISaleService {
     }
 
     @Override
+    @CircuitBreaker(name = "carts-service", fallbackMethod = "fallbackCart")
     public SaleDTO getSaleByOperationCode(String operationCode) {
+
         Sale saleDB = saleRepo.getSaleByOperationCode(operationCode);
 
         if (saleDB == null) {
@@ -62,7 +65,9 @@ public class SaleService implements ISaleService {
     }
 
     @Override
+    @CircuitBreaker(name = "carts-service", fallbackMethod = "fallbackCart")
     public SaleDTO createSale(Long cart_id) {
+
         CartDTO cart = cartAPI.getCart(cart_id);
 
         if (cart == null) {
@@ -97,4 +102,11 @@ public class SaleService implements ISaleService {
     public void deleteSale(Long id) {
         saleRepo.deleteById(id);
     }
+
+    public SaleDTO fallbackCart(Throwable t) {
+        System.out.println("--- Error ---: " + t.getMessage());
+
+        return new SaleDTO();
+    }
+
 }

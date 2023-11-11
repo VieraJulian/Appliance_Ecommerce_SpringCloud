@@ -8,6 +8,7 @@ import com.ApplianceEcommerce.carts.model.CartProduct;
 import com.ApplianceEcommerce.carts.repository.ICartProductRepository;
 import com.ApplianceEcommerce.carts.repository.ICartRepository;
 import com.ApplianceEcommerce.carts.repository.ProductAPI;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +67,9 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
     public CartDTO addProductToCart(Long cart_id, Long product_id) {
+
         Cart cart = cartRepo.findById(cart_id).orElse(null);
 
         if (cart == null) {
@@ -127,6 +130,7 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
     public CartDTO subtractProductFromCart(Long cart_id, Long product_id) {
         Cart cart = cartRepo.findById(cart_id).orElse(null);
 
@@ -175,6 +179,7 @@ public class CartService implements ICartService {
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackProduct")
     public CartDTO removeProductFromCart(Long cart_id, Long product_id) {
         Cart cart = cartRepo.findById(cart_id).orElse(null);
 
@@ -240,4 +245,10 @@ public class CartService implements ICartService {
     public void deleteCart(Long id) {
         cartRepo.deleteById(id);
     }
+    public CartDTO fallbackProduct(Long cart_id, Long product_id, Throwable t) {
+        System.out.println("--- Error ---: " + t.getMessage());
+
+        return new CartDTO();
+    }
+
 }
